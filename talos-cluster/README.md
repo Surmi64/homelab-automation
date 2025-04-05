@@ -1,7 +1,7 @@
 
 # Talos Kubernetes Cluster on Proxmox via Terraform
 
-This Terraform project provisions a Kubernetes cluster using Talos Linux on a Proxmox VE environment. It automates the setup of control plane and worker node, downloads Talos images, configures Talos machine secrets, bootstraps the cluster, and generates the required `talosconfig` and `kubeconfig`.
+This Terraform project provisions a Kubernetes cluster using Talos Linux on a Proxmox VE environment. It automates the setup of control plane and worker node, downloads Talos images, configures Talos machine secrets, bootstraps the cluster, and generates the required `talosconfig` and `kubeconfig`.     
 Credits to [Olav S. Thoresen - Talos cluster on Proxmox with Terraform](https://olav.ninja/talos-cluster-on-proxmox-with-terraform) /With adjustments to current needs, changes due to specific cluster config etc.
 
 ---
