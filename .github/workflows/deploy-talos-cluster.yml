@@ -1,0 +1,24 @@
+name: Deploy Talos Kubernetes Cluster to Proxmox
+
+on:
+  workflow_dispatch:
+
+jobs:
+  apply:
+    runs-on: 
+      - self-hosted
+      - proxmox
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set VM MAC addresses
+        run: |
+          sed -i 's/mac-of-worker-01/${{ secrets.MAC_OF_WORKER_01 }}/g' virtual_machines.tf
+          sed -i 's/mac-of-cp-01/${{ secrets.MAC_OF_CP_01 }}/g' virtual_machines.tf
+          
+      - name: Terrafrom Init
+        run: terraform init
+        
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
