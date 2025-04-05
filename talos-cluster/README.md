@@ -1,24 +1,24 @@
 
 # Talos Kubernetes Cluster on Proxmox via Terraform
 
-This Terraform project provisions a Kubernetes cluster using Talos Linux on a Proxmox VE environment. It automates the setup of control plane and worker nodes, downloads Talos images, configures Talos machine secrets, bootstraps the cluster, and generates the required `talosconfig` and `kubeconfig`.
+This Terraform project provisions a Kubernetes cluster using Talos Linux on a Proxmox VE environment. It automates the setup of control plane and worker node, downloads Talos images, configures Talos machine secrets, bootstraps the cluster, and generates the required `talosconfig` and `kubeconfig`.
 
 ---
 
-## 📁 Project Structure
+## 📁 Structure
 
+- `providers.tf`: Declares required providers (`proxmox`, `talos`) and their versions.
+- `main.tf`: Configures the Proxmox provider connection.
+- `files.tf`: Downloads the Talos nocloud image for VM provisioning.
 - `cluster.tf`: Manages Talos secrets, configuration generation, machine config application, cluster bootstrapping, and health checks.
 - `virtual_machines.tf`: Defines the Proxmox virtual machines for control plane and worker nodes.
-- `files.tf`: Downloads the Talos nocloud image for VM provisioning.
-- `main.tf`: Configures the Proxmox provider connection.
-- `providers.tf`: Declares required providers (`proxmox`, `talos`) and their versions.
 - `variables.tf`: Declares IPs and networking variables.
 
 ---
 
 ## ⚙️ Requirements
 
-- **Terraform** >= 1.0
+- Terraform installed on host
 - Proxmox VE cluster with API access
 - Proxmox provider: `bpg/proxmox` v0.74.1
 - Talos provider: `siderolabs/talos` v0.7.1
@@ -119,7 +119,7 @@ output "kubeconfig" {
 
 ## 🚀 Usage
 
-1. Replace placeholder MAC addresses (`mac-of-cp-01`, `mac-of-worker-01`) via GitHub Actions or manually.
+1. Replace placeholder MAC addresses (`mac-of-cp-01`, `mac-of-worker-01`) via GitHub Actions or manually. If you dont want to set, you can delete the `mac_address` field.
 2. Run:
 
 ```bash
@@ -127,7 +127,19 @@ terraform init
 terraform apply -auto-approve
 ```
 
-3. Export and use the kubeconfig to interact with your Talos-managed Kubernetes cluster.
+3. Export the kubeconfig and the talosconfig:
+```bash
+terraform output -raw kubeconfig
+terraform output -raw talosconfig
+
+```
+4. Copy the kubeconfig to `$HOME/.kube/config` file
+5. Copy the talosconfig to `$HOME/.talos/config` file
+6. Install kubectl
+```bash
+curl -LO https://dl.k8s.io/release/v1.32.0/bin/linux/amd64/kubectl && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+```
+7. HAPPY kubectl-ing :)
 
 ---
 
